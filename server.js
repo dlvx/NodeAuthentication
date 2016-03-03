@@ -6,11 +6,8 @@
 //dependencies
 var express = require('express');
 var app = express();
-// var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3000;
 
-//Open Shift Settings
-var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
-var ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -24,7 +21,7 @@ var session = require('express-session');
 var configDB = require('./config/database.js');
 
 //config
-mongoose.connect(configDB.open_shift_setup()); //connect to the DB
+mongoose.connect(configDB.url); //connect to the DB
 
 require('./config/passport')(passport); //pass passport for configuration
 
@@ -45,6 +42,6 @@ app.use(flash()); //use connect-flash for flash messages stored in sessions
 require('./app/routes.js')(app, passport); //load our routes and pass in the app and fully configured passport
 
 //launch
-app.listen(port, ip_address, function(){
-  console.log('App listening on '+ ip_address + ", on port "+port);
+app.listen(port, function(){
+  console.log('App listening on port '+port);
 });
